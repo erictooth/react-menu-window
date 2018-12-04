@@ -40,26 +40,24 @@ function ContextMenuWindow({
 
     const portalEl = usePortal();
 
-    return (
-        <div onContextMenu={openContextMenu}>
-            {visible
-                ? ReactDOM.createPortal(
-                      <div
-                          onMouseEnter={handleMouseEnter}
-                          onMouseLeave={handleMouseLeave}
-                          style={{
-                              position: "absolute",
-                              ...getPositionStyle(visible),
-                              ...containerStyle,
-                          }}>
-                          {renderMenu(visible)}
-                      </div>,
-                      portalEl
-                  )
-                : null}
-            {children}
-        </div>
-    );
+    return [
+        children(openContextMenu),
+        visible
+            ? ReactDOM.createPortal(
+                  <div
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                      style={{
+                          position: "absolute",
+                          ...getPositionStyle(visible),
+                          ...containerStyle,
+                      }}>
+                      {renderMenu(visible)}
+                  </div>,
+                  portalEl
+              )
+            : null,
+    ];
 }
 
 function useCloseListener(visible, handleClose, events) {
