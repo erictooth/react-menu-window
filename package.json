@@ -1,6 +1,6 @@
 {
     "name": "react-menu-window",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "repository": {
         "type": "git",
@@ -30,6 +30,8 @@
         "@erictooth/eslint-config": "^1.0.1",
         "@erictooth/prettier-config": "^2.0.0",
         "@pika/pack": "^0.4.0",
+        "@pika/plugin-build-node": "^0.4.0",
+        "@pika/plugin-build-umd": "^0.4.0",
         "@pika/plugin-build-web": "^0.4.0",
         "@pika/plugin-ts-standard-pkg": "^0.4.0",
         "@storybook/addon-storysource": "^5.1.9",
@@ -74,6 +76,15 @@
             ],
             [
                 "@pika/plugin-build-web"
+            ],
+            [
+                "@pika/plugin-build-node"
+            ],
+            [
+                "@pika/plugin-build-umd",
+                {
+                    "name": "MenuWindow"
+                }
             ]
         ]
     },
