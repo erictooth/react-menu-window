@@ -9,16 +9,12 @@ const setEventListeners = (
     events.forEach((event) => {
         elem[`${set}EventListener`](event, fn, {
             capture: true,
-            passive: true
+            passive: true,
         });
     });
 };
 
-export function useAttachEventListeners(
-    elem: any,
-    events: Array<string>,
-    cb: Function
-) {
+export function useAttachEventListeners(elem: any, events: Array<string>, cb: Function) {
     React.useEffect(() => {
         if (!elem) {
             return;

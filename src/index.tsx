@@ -8,7 +8,7 @@ export type MenuWindowProps = {
     children: React.ReactElement<any>;
     hideOn: string;
     getPosition: (e: React.MouseEvent) => ContentPosition;
-    render: (props: {close: () => void}) => React.ReactElement<any>;
+    render: (props: { close: () => void }) => React.ReactElement<any>;
     shouldOpen: () => boolean;
 };
 
@@ -53,7 +53,7 @@ export function MenuWindow({
 
     useAttachEventListeners(pos ? window : null, hideOn.split(" "), handleClose);
 
-    const renderedContent = render({close: () => setPos(null)});
+    const renderedContent = render({ close: () => setPos(null) });
 
     return (
         <>

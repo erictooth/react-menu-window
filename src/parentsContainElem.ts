@@ -4,8 +4,7 @@ export function parentsContainElem(target: any, elem: any) {
         if (node === elem) {
             return true;
         }
-        if (node !== null)
-            node = node.parentNode;
+        if (node !== null) node = node.parentNode;
     }
     return false;
 }
