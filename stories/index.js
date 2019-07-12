@@ -9,7 +9,7 @@ const stories = storiesOf("MenuWindow", /*eslint-disable-line no-undef*/ module)
 stories.add("basic", () => {
     return (
         <MenuWindow
-            render={({ close }) => (
+            render={(e, { close }) => (
                 <div style={{ background: "#333", color: "white", padding: "1em" }}>
                     Positioned content <button onClick={close}>Close</button>
                 </div>

@@ -8,7 +8,7 @@ export type MenuWindowProps = {
     children: React.ReactElement<any>;
     hideOn: string;
     getPosition: (e: React.MouseEvent) => ContentPosition;
-    render: (props: { close: () => void }) => React.ReactElement<any>;
+    render: (e: React.MouseEvent, props: { close: () => void }) => React.ReactElement<any>;
     shouldOpen: () => boolean;
 };
 
@@ -26,6 +26,7 @@ export function MenuWindow({
     render,
     shouldOpen = SHOULD_OPEN_DEFAULT,
 }: MenuWindowProps) {
+    const latestEvent = React.useRef<React.MouseEvent | null>(null);
     const [pos, setPos] = React.useState<ContentPosition | null>(null);
 
     const contentRef = React.useRef(null);
@@ -35,6 +36,7 @@ export function MenuWindow({
             e.preventDefault();
             e.stopPropagation();
             e.persist();
+            latestEvent.current = e;
             if (shouldOpen()) {
                 setPos(getPosition(e));
             }
@@ -53,14 +55,17 @@ export function MenuWindow({
 
     useAttachEventListeners(pos ? window : null, hideOn.split(" "), handleClose);
 
-    const renderedContent = render({ close: () => setPos(null) });
+    const renderedContent =
+        latestEvent.current && pos
+            ? render(latestEvent.current, { close: () => setPos(null) })
+            : null;
 
     return (
         <>
             {React.cloneElement(React.Children.only(children), {
                 onContextMenu: handleContextMenu,
             })}
-            {pos ? (
+            {renderedContent ? (
                 <Portal>
                     {React.cloneElement(renderedContent, {
                         ref: contentRef,
