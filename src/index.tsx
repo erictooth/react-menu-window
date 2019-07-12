@@ -1,27 +1,23 @@
 import * as React from "react";
 import { Portal } from "reakit/Portal";
-// import {useCloseListener} from "./useCloseListener";
 import { useAttachEventListeners } from "./useAttachEventListeners";
-type ContentPosition = { top: number; left: number };
+import { parentsContainElem } from "./parentsContainElem";
 
+type ContentPosition = { top: number; left: number };
 export type MenuWindowProps = {
     children: React.ReactElement<any>;
     hideOn: string;
     getPosition: (e: React.MouseEvent) => ContentPosition;
-    render: () => React.ReactElement<any>;
+    render: (props: {close: () => void}) => React.ReactElement<any>;
     shouldOpen: () => boolean;
 };
 
-const HIDE_ON_DEFAULT = "resize contextmenu mousedown click scroll keydown";
-const SHOULD_OPEN_DEFAULT = () => true;
 const GET_POSITION_DEFAULT: MenuWindowProps["getPosition"] = (e) => ({
     top: e.pageY,
     left: e.pageX,
 });
-
-const captureEvent = (e: React.SyntheticEvent) => {
-    e.stopPropagation();
-};
+const HIDE_ON_DEFAULT = "resize contextmenu mousedown click scroll keydown";
+const SHOULD_OPEN_DEFAULT = () => true;
 
 export function MenuWindow({
     children,
@@ -31,8 +27,8 @@ export function MenuWindow({
     shouldOpen = SHOULD_OPEN_DEFAULT,
 }: MenuWindowProps) {
     const [pos, setPos] = React.useState<ContentPosition | null>(null);
+
     const contentRef = React.useRef(null);
-    const windowRef = React.useRef(window);
 
     const handleContextMenu = React.useCallback(
         (e: React.MouseEvent) => {
@@ -46,17 +42,18 @@ export function MenuWindow({
         [getPosition, shouldOpen]
     );
 
-    const handleClose = React.useCallback(() => {
-        setPos(null);
-    }, [setPos]);
+    const handleClose = React.useCallback(
+        (e: any) => {
+            if (!parentsContainElem(e.target, contentRef.current)) {
+                setPos(null);
+            }
+        },
+        [contentRef, setPos]
+    );
 
-    // Attach listeners to the window that close the rendered content
-    useAttachEventListeners(pos ? windowRef : null, hideOn.split(" "), handleClose);
+    useAttachEventListeners(pos ? window : null, hideOn.split(" "), handleClose);
 
-    // Prevent above actions from closing the menu when triggered inside
-    useAttachEventListeners(contentRef, hideOn.split(" "), captureEvent);
-
-    const renderedContent = render();
+    const renderedContent = render({close: () => setPos(null)});
 
     return (
         <>

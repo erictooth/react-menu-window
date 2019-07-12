@@ -7,26 +7,27 @@ const setEventListeners = (
     set: "add" | "remove"
 ) => {
     events.forEach((event) => {
-        elem[`${set}EventListener`](event, fn);
+        elem[`${set}EventListener`](event, fn, {
+            capture: true,
+            passive: true
+        });
     });
 };
 
 export function useAttachEventListeners(
-    elem: React.MutableRefObject<any> | null,
+    elem: any,
     events: Array<string>,
     cb: Function
 ) {
     React.useEffect(() => {
-        if (!elem || !elem.current) {
+        if (!elem) {
             return;
         }
 
-        const eventTarget = elem.current;
-
-        setEventListeners(events, cb, eventTarget, "add");
+        setEventListeners(events, cb, elem, "add");
 
         return () => {
-            setEventListeners(events, cb, eventTarget, "remove");
+            setEventListeners(events, cb, elem, "remove");
         };
     }, [cb, elem, events]);
 }
