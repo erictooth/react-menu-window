@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Portal } from "reakit/Portal";
 import { useAttachEventListeners } from "./useAttachEventListeners";
-import { parentsContainElem } from "./parentsContainElem";
 
 type ContentPosition = { top: number; left: number };
 export type MenuWindowProps = {
@@ -29,7 +28,7 @@ export function MenuWindow({
     const latestEvent = React.useRef<React.MouseEvent | null>(null);
     const [pos, setPos] = React.useState<ContentPosition | null>(null);
 
-    const contentRef = React.useRef(null);
+    const contentRef = React.useRef<HTMLElement | null>(null);
 
     const handleContextMenu = React.useCallback(
         (e: React.MouseEvent) => {
@@ -46,7 +45,13 @@ export function MenuWindow({
 
     const handleClose = React.useCallback(
         (e: any) => {
-            if (!parentsContainElem(e.target, contentRef.current)) {
+            /**
+             * Ignore all hideOn events if the're triggered on the content element or any of its children.
+             */
+            if (
+                !contentRef.current ||
+                (e.target !== contentRef.current && !contentRef.current.contains(e.target))
+            ) {
                 setPos(null);
             }
         },
