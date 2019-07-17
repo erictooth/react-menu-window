@@ -10,13 +10,13 @@ stories.add("basic", () => {
     return (
         <MenuWindow
             render={(e, { close }) => (
-                <div style={{ background: "#333", color: "white", padding: "1em" }}>
+                <div style={{ background: "#333", color: "white", padding: "1em", width: "200px" }}>
                     Positioned content <button onClick={close}>Close</button>
                 </div>
             )}>
             <div
                 style={{
-                    width: "400px",
+                    width: "100%",
                     height: "400px",
                     background: "lightgrey",
                     display: "flex",
