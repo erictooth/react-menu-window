@@ -2,19 +2,23 @@ import * as React from "react";
 
 const setEventListeners = (
     events: Array<string>,
-    fn: Function,
-    elem: any,
+    fn: EventListener,
+    elem: HTMLElement | Window,
     set: "add" | "remove"
 ) => {
     events.forEach((event) => {
-        elem[`${set}EventListener`](event, fn, {
+        (set === "add" ? elem.addEventListener : elem.removeEventListener)(event, fn, {
             capture: true,
             passive: true,
         });
     });
 };
 
-export function useAttachEventListeners(elem: any, events: Array<string>, cb: Function) {
+export function useAttachEventListeners(
+    elem: HTMLElement | Window | null,
+    events: Array<string>,
+    cb: EventListener
+) {
     React.useEffect(() => {
         if (!elem) {
             return;
