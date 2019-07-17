@@ -10,7 +10,7 @@ export type MenuWindowProps = {
     getPosition: (e: React.MouseEvent) => ContentPosition;
     render: (e: React.MouseEvent, props: { close: () => void }) => React.ReactElement<any>;
     shouldOpen: () => boolean;
-    viewportOffset: number
+    viewportOffset: number;
 };
 
 const GET_POSITION_DEFAULT: MenuWindowProps["getPosition"] = (e) => ({
@@ -26,7 +26,7 @@ export function MenuWindow({
     hideOn = HIDE_ON_DEFAULT,
     render,
     shouldOpen = SHOULD_OPEN_DEFAULT,
-    viewportOffset = 8
+    viewportOffset = 8,
 }: MenuWindowProps) {
     const latestEvent = React.useRef<React.MouseEvent | null>(null);
     const [pos, setPos] = React.useState<ContentPosition | null>(null);
@@ -68,7 +68,7 @@ export function MenuWindow({
             ? render(latestEvent.current, { close: () => setPos(null) })
             : null;
 
-    const {style: contentStyles} = useFitInViewport(contentRef, pos, viewportOffset);
+    const { style: contentStyles } = useFitInViewport(contentRef, pos, viewportOffset);
 
     return (
         <>

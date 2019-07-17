@@ -51,16 +51,16 @@ export const getFitOffsets = (viewportOffset: number) => (elemRect: Rect) => {
     };
     const offsets = {
         x: 0,
-        y: 0
+        y: 0,
     };
 
     if (!fitsOnRight(viewportOffset)(elemRect, viewportRect)) {
-        offsets.x = viewportRect.width - viewportOffset - elemRect.right
+        offsets.x = viewportRect.width - viewportOffset - elemRect.right;
     }
 
     if (!fitsOnBottom(viewportOffset)(elemRect, viewportRect)) {
-        offsets.y = viewportRect.height - viewportOffset - elemRect.bottom
+        offsets.y = viewportRect.height - viewportOffset - elemRect.bottom;
     }
 
     return offsets;
-}
+};

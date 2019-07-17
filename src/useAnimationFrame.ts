@@ -21,5 +21,6 @@ export function useAnimationFrame(
                 cancelAnimationFrame(latestAnimationFrame.current);
             }
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [update, pause, ...deps]);
 }
