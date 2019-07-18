@@ -3,7 +3,7 @@ import * as React from "react";
 export function useAnimationFrame(
     update: Function,
     pause: boolean | Function = false,
-    deps: Array<any> = []
+    deps: any[] = []
 ) {
     const latestAnimationFrame = React.useRef<number | null>(null);
 

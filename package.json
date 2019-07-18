@@ -27,7 +27,7 @@
     "author": "Eric Mantooth",
     "license": "MIT",
     "devDependencies": {
-        "@erictooth/eslint-config": "^1.0.1",
+        "@erictooth/eslint-config": "^1.1.2",
         "@erictooth/prettier-config": "^2.0.0",
         "@pika/pack": "^0.4.0",
         "@pika/plugin-build-node": "^0.4.0",
@@ -63,7 +63,8 @@
         },
         "extends": [
             "@erictooth/eslint-config",
-            "@erictooth/eslint-config/react"
+            "@erictooth/eslint-config/react",
+            "@erictooth/eslint-config/typescript"
         ]
     },
     "eslintIgnore": [

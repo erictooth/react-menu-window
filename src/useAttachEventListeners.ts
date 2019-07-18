@@ -1,7 +1,7 @@
 import * as React from "react";
 
 const setEventListeners = (
-    events: Array<string>,
+    events: string[],
     fn: EventListener,
     elem: HTMLElement | Window,
     set: "add" | "remove"
@@ -16,7 +16,7 @@ const setEventListeners = (
 
 export function useAttachEventListeners(
     elem: HTMLElement | Window | null,
-    events: Array<string>,
+    events: string[],
     cb: EventListener
 ) {
     React.useEffect(() => {
