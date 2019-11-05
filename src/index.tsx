@@ -31,11 +31,27 @@ export function MenuWindow({
     onOpen,
     onClose,
     viewportOffset = 8,
-}: MenuWindowProps) {
+}: MenuWindowProps): React.ReactElement {
     const latestEvent = React.useRef<React.MouseEvent | null>(null);
     const [pos, setPos] = React.useState<ContentPosition | null>(null);
 
     const contentRef = React.useRef<HTMLElement | null>(null);
+
+    const openWindow = React.useCallback(
+        (e) => {
+            onOpen && onOpen(e);
+            setPos(getPosition(e));
+        },
+        [onOpen, setPos, getPosition]
+    );
+
+    const closeWindow = React.useCallback(
+        (e) => {
+            setPos(null);
+            onClose && onClose(e);
+        },
+        [setPos, onClose]
+    );
 
     const handleContextMenu = React.useCallback(
         (e: React.MouseEvent) => {
@@ -44,15 +60,14 @@ export function MenuWindow({
             e.persist();
             latestEvent.current = e;
             if (shouldOpen()) {
-                onOpen && onOpen(e);
-                setPos(getPosition(e));
+                openWindow(e);
             }
         },
-        [getPosition, shouldOpen, onOpen]
+        [shouldOpen, openWindow]
     );
 
     const handleClose = React.useCallback(
-        (e: any) => {
+        (e) => {
             /**
              * Ignore all hideOn events if they're triggered on the content element or any of its children.
              */
@@ -60,11 +75,10 @@ export function MenuWindow({
                 !contentRef.current ||
                 (e.target !== contentRef.current && !contentRef.current.contains(e.target))
             ) {
-                setPos(null);
-                onClose && onClose(e);
+                closeWindow(e);
             }
         },
-        [contentRef, setPos, onClose]
+        [contentRef, closeWindow]
     );
 
     useAttachEventListeners(pos ? window : null, hideOn.split(" "), handleClose);
