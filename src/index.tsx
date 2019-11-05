@@ -10,6 +10,8 @@ export type MenuWindowProps = {
     getPosition: (e: React.MouseEvent) => ContentPosition;
     render: (e: React.MouseEvent, props: { close: () => void }) => React.ReactElement<any>;
     shouldOpen: () => boolean;
+    onOpen: (e: React.MouseEvent) => void;
+    onClose: (e: React.MouseEvent) => void;
     viewportOffset: number;
 };
 
@@ -26,6 +28,8 @@ export function MenuWindow({
     hideOn = HIDE_ON_DEFAULT,
     render,
     shouldOpen = SHOULD_OPEN_DEFAULT,
+    onOpen,
+    onClose,
     viewportOffset = 8,
 }: MenuWindowProps) {
     const latestEvent = React.useRef<React.MouseEvent | null>(null);
@@ -40,10 +44,11 @@ export function MenuWindow({
             e.persist();
             latestEvent.current = e;
             if (shouldOpen()) {
+                onOpen && onOpen(e);
                 setPos(getPosition(e));
             }
         },
-        [getPosition, shouldOpen]
+        [getPosition, shouldOpen, onOpen]
     );
 
     const handleClose = React.useCallback(
@@ -56,9 +61,10 @@ export function MenuWindow({
                 (e.target !== contentRef.current && !contentRef.current.contains(e.target))
             ) {
                 setPos(null);
+                onClose && onClose(e);
             }
         },
-        [contentRef, setPos]
+        [contentRef, setPos, onClose]
     );
 
     useAttachEventListeners(pos ? window : null, hideOn.split(" "), handleClose);
