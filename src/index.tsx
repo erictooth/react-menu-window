@@ -9,7 +9,7 @@ export type MenuWindowProps = {
     hideOn: string;
     getPosition: (e: React.MouseEvent) => ContentPosition;
     render: (e: React.MouseEvent, props: { close: () => void }) => React.ReactElement<any>;
-    shouldOpen: () => boolean;
+    shouldOpen: (e: React.MouseEvent) => boolean;
     onOpen: (e: React.MouseEvent) => void;
     onClose: (e: React.MouseEvent) => void;
     viewportOffset: number;
@@ -59,7 +59,7 @@ export function MenuWindow({
             e.stopPropagation();
             e.persist();
             latestEvent.current = e;
-            if (shouldOpen()) {
+            if (shouldOpen(e)) {
                 openWindow(e);
             }
         },
